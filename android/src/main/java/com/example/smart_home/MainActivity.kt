@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
             val endpoint = if (lightOn) "/led_on" else "/led_off"
             sendRequest(esp32Ip + endpoint)
         }
+
+        binding.btnSensors.setOnClickListener {
+            startActivity(Intent(this, SensorsActivity::class.java))
+        }
     }
 
     private fun sendRequest(url: String) {

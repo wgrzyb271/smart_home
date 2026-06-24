@@ -37,6 +37,13 @@
             android:layout_marginTop="16dp"
             android:text="Toggle Light" />
 
+        <Button
+            android:id="@+id/btnSensors"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Environment Sensors" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

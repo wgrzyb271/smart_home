@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">smart_home</string>
+    <string name="temperature_format">%1$s°C</string>
+    <string name="humidity_format">%1$s%%</string>
+    <string name="sensor_title">Environment Sensors</string>
+    <string name="temp_label">Temperature</string>
+    <string name="humidity_label">Humidity</string>
+    <string name="refresh_data">Refresh Data</string>
+    <string name="back_to_dashboard">Back to Dashboard</string>
 </resources>

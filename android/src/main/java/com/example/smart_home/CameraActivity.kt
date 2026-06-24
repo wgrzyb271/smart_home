@@ -79,7 +79,8 @@ class CameraActivity : AppCompatActivity() {
             settings.useWideViewPort = true
             settings.loadWithOverviewMode = true
             
-            val videoUrl = "http://192.168.2.23:5000/video_feed"
+//            val videoUrl = "http://192.168.0.248:5001/video_feed"
+            val videoUrl = "http://10.0.2.2:5001/video_feed" // localhost
             loadUrl(videoUrl)
         }
 
