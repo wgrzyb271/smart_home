@@ -1,10 +1,12 @@
 import cv2
-from flask import Flask, Response, render_template_string
+from flask import Flask, Response, render_template_string, jsonify
 import threading
 import sys
+import random
 
 app = Flask(__name__)
-camera = cv2.VideoCapture(0)
+camera = cv2.VideoCapture(1) # 0 - iphone, 1 - macOS
+
 
 # Load the face detection model
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -14,7 +16,7 @@ latest_frame = None
 frame_lock = threading.Lock()
 
 # LED state
-led_state = "off"
+led_state = "on"
 
 def process_frames():
     global latest_frame
@@ -98,8 +100,47 @@ def get_led_status():
     global led_state
     return led_state
 
+@app.route('/sensors')
+def get_sensors():
+    # Simulating sensor data
+    data = {
+        "temperature": round(random.uniform(20.0, 30.0), 1),
+        "humidity": round(random.uniform(40.0, 60.0), 1)
+    }
+    return jsonify(data)
+
+@app.route('/sensors_view')
+def sensors_view():
+    return render_template_string('''
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="refresh" content="5">
+            <style>
+              body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f0f0f0; }
+              .card { background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; }
+              h1 { color: #333; }
+              .val { font-size: 3rem; font-weight: bold; color: #007bff; }
+            </style>
+          </head>
+          <body>
+            <div class="card">
+                <h1>Current Environment</h1>
+                <div class="val" id="temp">--°C</div>
+                <div class="val" id="hum">--%</div>
+            </div>
+            <script>
+                fetch('/sensors').then(r => r.json()).then(data => {
+                    document.getElementById('temp').innerText = data.temperature + '°C';
+                    document.getElementById('hum').innerText = data.humidity + '%';
+                });
+            </script>
+          </body>
+        </html>
+    ''')
+
 def run_flask():
-    app.run(host='0.0.0.0', port=5000, threaded=True, use_reloader=False)
+    app.run(host='0.0.0.0', port=5001, threaded=True, use_reloader=False)
 
 if __name__ == '__main__':
     threading.Thread(target=process_frames, daemon=True).start()
